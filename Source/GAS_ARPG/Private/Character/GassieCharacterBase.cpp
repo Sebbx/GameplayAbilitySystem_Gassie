@@ -9,6 +9,16 @@ AGassieCharacterBase::AGassieCharacterBase()
 	Weapon->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
+UAbilitySystemComponent* AGassieCharacterBase::GetAbilitySystemComponent() const
+{
+	return AbilitySystemComponent;
+}
+
+UAttributeSet* AGassieCharacterBase::GetAttributeSet() const
+{
+	return AttributeSet;
+}
+
 void AGassieCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
