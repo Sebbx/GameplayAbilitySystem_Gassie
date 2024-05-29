@@ -27,6 +27,7 @@ void AGassieEffectActor::OnOverlap(UPrimitiveComponent* OverlappedComponent, AAc
 		//TODO: Big no no
 		UGassieAttributeSet* MutableGassieAttributeSet = const_cast<UGassieAttributeSet*>(GassieAttributeSet);
 		MutableGassieAttributeSet->SetHealth(GassieAttributeSet->GetHealth() + 5.f);
+		MutableGassieAttributeSet->SetMana(GassieAttributeSet->GetMana() - 10.f);
 		Destroy();
 	}
 }

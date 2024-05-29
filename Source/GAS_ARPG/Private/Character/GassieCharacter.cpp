@@ -5,7 +5,9 @@
 
 #include "AbilitySystemComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Player/GassiePlayerController.h"
 #include "Player/GassiePlayerState.h"
+#include "UI/HUD/GassieHUD.h"
 
 AGassieCharacter::AGassieCharacter()
 {
@@ -44,4 +46,13 @@ void AGassieCharacter::InitAbilityActorInfo()
 	GassiePlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(GassiePlayerState, this);
 	AbilitySystemComponent = GassiePlayerState->GetAbilitySystemComponent();
 	AttributeSet = GassiePlayerState->GetAttributeSet();
+
+	if (AGassiePlayerController* GassiePlayerController =  Cast<AGassiePlayerController>(GetController()))
+	{
+		if(AGassieHUD* GassieHUD = Cast<AGassieHUD>(GassiePlayerController->GetHUD()))
+		{
+			GassieHUD->InitOverlay(GassiePlayerController, GassiePlayerState, AbilitySystemComponent, AttributeSet);
+		}
+	}
+	
 }

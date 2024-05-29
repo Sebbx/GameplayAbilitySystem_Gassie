@@ -9,7 +9,7 @@
 
 UGassieAttributeSet::UGassieAttributeSet()
 {
-	InitHealth(100.f);
+	InitHealth(30.f);
 	InitMaxHealth(100.f);
 	InitMana(70.f);
 	InitMaxMana(70.f);
