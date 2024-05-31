@@ -2,45 +2,32 @@
 
 #include "Actor/GassieEffectActor.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemInterface.h"
-#include "AbilitySystem/GassieAttributeSet.h"
-#include "Components/SphereComponent.h"
+
 
 AGassieEffectActor::AGassieEffectActor()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
-	Mesh = CreateDefaultSubobject<UStaticMeshComponent>("Mesh");
-	SetRootComponent(Mesh);
-	
-	Sphere = CreateDefaultSubobject<USphereComponent>("Sphere");
-	Sphere->SetupAttachment(GetRootComponent());
-
-}
-
-void AGassieEffectActor::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-	if (IAbilitySystemInterface* ASCInterface = Cast<IAbilitySystemInterface>(OtherActor))
-	{
-		const UGassieAttributeSet* GassieAttributeSet = Cast<UGassieAttributeSet>(ASCInterface->GetAbilitySystemComponent()->GetAttributeSet(UGassieAttributeSet::StaticClass()));
-		//TODO: Big no no
-		UGassieAttributeSet* MutableGassieAttributeSet = const_cast<UGassieAttributeSet*>(GassieAttributeSet);
-		MutableGassieAttributeSet->SetHealth(GassieAttributeSet->GetHealth() + 5.f);
-		MutableGassieAttributeSet->SetMana(GassieAttributeSet->GetMana() - 10.f);
-		Destroy();
-	}
-}
-
-void AGassieEffectActor::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
-{
-	
+	SetRootComponent(CreateDefaultSubobject<USceneComponent>("SceneRoot"));
 }
 
 void AGassieEffectActor::BeginPlay()
 {
 	Super::BeginPlay();
-	Sphere->OnComponentBeginOverlap.AddDynamic(this, &AGassieEffectActor::OnOverlap);
-	Sphere->OnComponentEndOverlap.AddDynamic(this, &AGassieEffectActor::OnEndOverlap);
+}
+
+void AGassieEffectActor::ApplyEffectToTarget(AActor* Target, TSubclassOf<UGameplayEffect> GameplayEffectClass)
+{	
+	UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(Target);
+	if (!TargetASC) return;
+
+	check (GameplayEffectClass);
+	FGameplayEffectContextHandle EffectContextHandle = TargetASC->MakeEffectContext();
+	EffectContextHandle.AddSourceObject(this);
+	const FGameplayEffectSpecHandle EffectSpecHandle = TargetASC->MakeOutgoingSpec(GameplayEffectClass, 1.f, EffectContextHandle);
+	TargetASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
 }
 
