@@ -25,3 +25,7 @@ void AGassieCharacterBase::BeginPlay()
 	
 }
 
+void AGassieCharacterBase::InitAbilityActorInfo()
+{
+}
+

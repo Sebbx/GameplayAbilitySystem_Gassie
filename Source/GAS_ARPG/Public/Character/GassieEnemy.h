@@ -19,7 +19,8 @@ class GAS_ARPG_API AGassieEnemy : public AGassieCharacterBase, public IEnemyInte
 
 protected:
 	virtual void BeginPlay() override;
-
+	virtual void InitAbilityActorInfo() override;
+	
 public:
 	UPROPERTY(BlueprintReadOnly)
 	bool bHighLighted = false;
