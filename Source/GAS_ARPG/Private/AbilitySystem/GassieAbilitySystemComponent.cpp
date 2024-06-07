@@ -13,8 +13,8 @@ void UGassieAbilitySystemComponent::EffectApplied(UAbilitySystemComponent* Abili
 	//54.
 	FGameplayTagContainer TagContainer;
 	EffectSpec.GetAllAssetTags(TagContainer);
-	for (const FGameplayTag& Tag : TagContainer)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, FString::Printf(TEXT("GE Tag: %s"), *Tag.ToString()));
-	}
+	//55.
+	EffectAssetTags.Broadcast(TagContainer);
+	
+
 }
