@@ -30,14 +30,20 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 	{
 		for (const FGameplayTag& Tag : AssetTags)
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, FString::Printf(TEXT("GE Tag: %s"), *Tag.ToString()));
-
 			// 57.
-			/* Poniższe wywołanie nie jest możliwe do wykonania bez 'capture', ponieważ Lambda to anonimowa funkcja i nie może wiedzieć nic o istniejących obiektach, w tym przypadku
+			/* Wywołanie GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable, Tag); nie jest możliwe do wykonania bez 'capture', ponieważ Lambda to anonimowa funkcja i nie może wiedzieć nic o istniejących obiektach, w tym przypadku
 			OverlayWidgetComponent.
 			Jeśli chcemy się dostać do member variable, wtedy ten obiekt który ma member variable musi zostać 'capture' w lambdzie (nawiasy kwagdratowe)*/
 
-			FUIWidgetRow* Row = GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable, Tag);
+			// 58.
+			// "A.1".MatchesTag("A") will return True, "A".MatchesTag("A.1") will return False
+			
+			if (Tag.MatchesTag(FGameplayTag::RequestGameplayTag(FName("Message"))))
+			{
+				const FUIWidgetRow* Row = GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable, Tag);
+				MessageWidgetRow.Broadcast(*Row);
+			}
+
 		}
 	}
 	);
