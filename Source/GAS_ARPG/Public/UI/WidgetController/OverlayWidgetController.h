@@ -65,4 +65,16 @@ protected:
 	void MaxHealthChanged(const FOnAttributeChangeData& Data) const;
 	void ManaChanged(const FOnAttributeChangeData& Data) const;
 	void MaxManaChanged(const FOnAttributeChangeData& Data) const;
+
+	//57. Taka funkcja może być wywołana każdym typem
+	template<typename T>
+	T* GetDataTableRowByTag(UDataTable* DataTable, const FGameplayTag& Tag);
 };
+
+// Pospolitym zabiegem jest umieszczanie definicji templateu w pliku .h
+template <typename T>
+T* UOverlayWidgetController::GetDataTableRowByTag(UDataTable* DataTable, const FGameplayTag& Tag)
+{
+	T* Row = DataTable->FindRow<T>(Tag.GetTagName(), TEXT(""));
+	return Row;
+}
