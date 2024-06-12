@@ -19,7 +19,7 @@ class GAS_ARPG_API UGassieAbilitySystemComponent : public UAbilitySystemComponen
 
 public:
 	void AbilityActorInfoSet(); //53.
-	FEffectAssetTags EffectAssetTags; //55
+	FEffectAssetTags EffectAssetTagsDelegate; //55
 	
 	
 protected:

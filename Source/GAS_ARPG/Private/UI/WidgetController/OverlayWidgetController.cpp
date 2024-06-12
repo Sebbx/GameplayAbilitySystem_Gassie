@@ -24,8 +24,8 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(GassieAttributes->GetManaAttribute()).AddUObject(this, &UOverlayWidgetController::ManaChanged);
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(GassieAttributes->GetMaxManaAttribute()).AddUObject(this, &UOverlayWidgetController::MaxManaChanged);
 
-	//55.
-	Cast<UGassieAbilitySystemComponent>(AbilitySystemComponent)->EffectAssetTags.AddLambda(
+	//55. Broadcasted from UGassieAbilitySystemComponent::EffectApplied
+	Cast<UGassieAbilitySystemComponent>(AbilitySystemComponent)->EffectAssetTagsDelegate.AddLambda(
 	[this](const FGameplayTagContainer& AssetTags)
 	{
 		for (const FGameplayTag& Tag : AssetTags)
@@ -41,7 +41,7 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 			if (Tag.MatchesTag(FGameplayTag::RequestGameplayTag(FName("Message"))))
 			{
 				const FUIWidgetRow* Row = GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable, Tag);
-				MessageWidgetRow.Broadcast(*Row);
+				MessageWidgetRowDelegate.Broadcast(*Row);
 			}
 
 		}

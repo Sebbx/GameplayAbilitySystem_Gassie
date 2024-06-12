@@ -14,7 +14,7 @@ void UGassieAbilitySystemComponent::EffectApplied(UAbilitySystemComponent* Abili
 	FGameplayTagContainer TagContainer;
 	EffectSpec.GetAllAssetTags(TagContainer);
 	//55.
-	EffectAssetTags.Broadcast(TagContainer);
+	EffectAssetTagsDelegate.Broadcast(TagContainer);
 	
 
 }

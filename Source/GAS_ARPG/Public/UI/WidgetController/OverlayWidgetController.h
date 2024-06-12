@@ -59,7 +59,7 @@ public:
 	FOnMaxManaChangedSignature OnMaxManaChanged;
 
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Messages")
-	FMessageWidgetRowSignature MessageWidgetRow;
+	FMessageWidgetRowSignature MessageWidgetRowDelegate;
 
 protected:
 
