@@ -21,11 +21,17 @@ UGassieAttributeSet::UGassieAttributeSet()
 void UGassieAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	
+	DOREPLIFETIME_CONDITION_NOTIFY(UGassieAttributeSet, Strength, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UGassieAttributeSet, Intelligence, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UGassieAttributeSet, Resilience, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UGassieAttributeSet, Vigor, COND_None, REPNOTIFY_Always);
 
 	DOREPLIFETIME_CONDITION_NOTIFY(UGassieAttributeSet, Health, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UGassieAttributeSet, MaxHealth, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UGassieAttributeSet, Mana, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UGassieAttributeSet, MaxMana, COND_None, REPNOTIFY_Always);
+
 }
 
 void UGassieAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
@@ -87,8 +93,37 @@ void UGassieAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCall
 	FEffectProperties Props;
 	SetEffectProperties(Data, Props);
 
+	//63. Properly Clamping Attributes
+	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
+	{
+		SetHealth(FMath::Clamp(GetHealth(), 0.f, GetMaxHealth()));
+	}
+
+	if (Data.EvaluatedData.Attribute == GetManaAttribute())
+	{
+		SetMana(FMath::Clamp(GetMana(), 0.f, GetMaxMana()));
+	}
 	
-	
+}
+
+void UGassieAttributeSet::OnRep_Strength(const FGameplayAttributeData& OldStrength) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UGassieAttributeSet, Strength, OldStrength);
+}
+
+void UGassieAttributeSet::OnRep_Intelligence(const FGameplayAttributeData& OldIntelligence) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UGassieAttributeSet, Intelligence, OldIntelligence);
+}
+
+void UGassieAttributeSet::OnRep_Resilience(const FGameplayAttributeData& OldResilience) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UGassieAttributeSet, Resilience, OldResilience);
+}
+
+void UGassieAttributeSet::OnRep_Vigor(const FGameplayAttributeData& OldVigor) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UGassieAttributeSet, Vigor, OldVigor);
 }
 
 void UGassieAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth) const
@@ -110,4 +145,5 @@ void UGassieAttributeSet::OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UGassieAttributeSet, MaxMana, OldMaxMana);
 }
+
 

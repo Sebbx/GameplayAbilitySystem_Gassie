@@ -7,8 +7,10 @@
 #include "GameFramework/Character.h"
 #include "GassieCharacterBase.generated.h"
 
+class UGameplayEffect;
 class UAttributeSet;
 class UAbilitySystemComponent;
+
 // Preventing to being dragged out to the level
 UCLASS(Abstract)
 class GAS_ARPG_API AGassieCharacterBase : public ACharacter, public IAbilitySystemInterface
@@ -33,5 +35,11 @@ protected:
 	TObjectPtr<UAttributeSet> AttributeSet;
 
 	virtual void InitAbilityActorInfo();
+
+	UPROPERTY(EditAnywhere, Category = "Attributes")
+	TSubclassOf<UGameplayEffect> DefaultPrimaryAttributes;
+
+	//65 Initialize Attributes with Gameplay Effects
+	void InitializePrimaryAttributes() const;
 
 };

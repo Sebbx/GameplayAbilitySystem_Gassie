@@ -54,5 +54,5 @@ void AGassieCharacter::InitAbilityActorInfo()
 			GassieHUD->InitOverlay(GassiePlayerController, GassiePlayerState, AbilitySystemComponent, AttributeSet);
 		}
 	}
-	
+	InitializePrimaryAttributes();
 }
