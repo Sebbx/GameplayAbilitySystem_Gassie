@@ -13,9 +13,7 @@
 UGassieAttributeSet::UGassieAttributeSet()
 {
 	InitHealth(30.f);
-	InitMaxHealth(100.f);
 	InitMana(10.f);
-	InitMaxMana(70.f);
 }
 
 void UGassieAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -26,11 +24,20 @@ void UGassieAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& 
 	DOREPLIFETIME_CONDITION_NOTIFY(UGassieAttributeSet, Intelligence, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UGassieAttributeSet, Resilience, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UGassieAttributeSet, Vigor, COND_None, REPNOTIFY_Always);
-
-	DOREPLIFETIME_CONDITION_NOTIFY(UGassieAttributeSet, Health, COND_None, REPNOTIFY_Always);
+	
+	DOREPLIFETIME_CONDITION_NOTIFY(UGassieAttributeSet, Armor, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UGassieAttributeSet, ArmorPenetration, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UGassieAttributeSet, BlockChance, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UGassieAttributeSet, CriticalHitChance, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UGassieAttributeSet, CriticalHitDamage, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UGassieAttributeSet, CriticalHitResistance, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UGassieAttributeSet, HealthRegeneration, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UGassieAttributeSet, ManaRegeneration, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UGassieAttributeSet, MaxHealth, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(UGassieAttributeSet, Mana, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UGassieAttributeSet, MaxMana, COND_None, REPNOTIFY_Always);
+	
+	DOREPLIFETIME_CONDITION_NOTIFY(UGassieAttributeSet, Health, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UGassieAttributeSet, Mana, COND_None, REPNOTIFY_Always);
 
 }
 
@@ -126,9 +133,44 @@ void UGassieAttributeSet::OnRep_Vigor(const FGameplayAttributeData& OldVigor) co
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UGassieAttributeSet, Vigor, OldVigor);
 }
 
-void UGassieAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth) const
+void UGassieAttributeSet::OnRep_Armor(const FGameplayAttributeData& OldArmor) const
 {
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UGassieAttributeSet, Health, OldHealth);
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UGassieAttributeSet, Armor, OldArmor);
+}
+
+void UGassieAttributeSet::OnRep_ArmorPenetration(const FGameplayAttributeData& OldArmorPenetration) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UGassieAttributeSet, ArmorPenetration, OldArmorPenetration);
+}
+
+void UGassieAttributeSet::OnRep_BlockChance(const FGameplayAttributeData& OldBlockChance) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UGassieAttributeSet, BlockChance, OldBlockChance);
+}
+
+void UGassieAttributeSet::OnRep_CriticalHitChance(const FGameplayAttributeData& OldCriticalHitChance) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UGassieAttributeSet, CriticalHitChance, OldCriticalHitChance);
+}
+
+void UGassieAttributeSet::OnRep_CriticalHitDamage(const FGameplayAttributeData& OldCriticalHitDamage) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UGassieAttributeSet, CriticalHitDamage, OldCriticalHitDamage);
+}
+
+void UGassieAttributeSet::OnRep_CriticalHitResistance(const FGameplayAttributeData& OldCriticalHitResistance) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UGassieAttributeSet, CriticalHitResistance, OldCriticalHitResistance);
+}
+
+void UGassieAttributeSet::OnRep_HealthRegeneration(const FGameplayAttributeData& OldHealthRegeneration) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UGassieAttributeSet, HealthRegeneration, OldHealthRegeneration);
+}
+
+void UGassieAttributeSet::OnRep_ManaRegeneration(const FGameplayAttributeData& OldManaRegeneration) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UGassieAttributeSet, ManaRegeneration, OldManaRegeneration);
 }
 
 void UGassieAttributeSet::OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth) const
@@ -136,14 +178,20 @@ void UGassieAttributeSet::OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHe
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UGassieAttributeSet, MaxHealth, OldMaxHealth);
 }
 
+void UGassieAttributeSet::OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UGassieAttributeSet, MaxMana, OldMaxMana);
+}
+
+void UGassieAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UGassieAttributeSet, Health, OldHealth);
+}
+
 void UGassieAttributeSet::OnRep_Mana(const FGameplayAttributeData& OldMana) const
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UGassieAttributeSet, Mana, OldMana);
 }
 
-void UGassieAttributeSet::OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana) const
-{
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UGassieAttributeSet, MaxMana, OldMaxMana);
-}
 
 

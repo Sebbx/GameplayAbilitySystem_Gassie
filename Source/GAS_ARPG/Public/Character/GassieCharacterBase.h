@@ -39,7 +39,14 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Attributes")
 	TSubclassOf<UGameplayEffect> DefaultPrimaryAttributes;
 
-	//65 Initialize Attributes with Gameplay Effects
-	void InitializePrimaryAttributes() const;
+	UPROPERTY(EditAnywhere, Category = "Attributes")
+	TSubclassOf<UGameplayEffect> DefaultSecondaryAttributes;
+
+	//65. Initialize Attributes with Gameplay Effects
+	//void InitializePrimaryAttributes() const;
+
+	//70. Derived Attributes
+	void InitializeDefaultAttributes() const;
+	void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClass, float Level) const;
 
 };
