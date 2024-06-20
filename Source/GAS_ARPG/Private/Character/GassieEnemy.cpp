@@ -45,4 +45,9 @@ void AGassieEnemy::UnHighlightActor()
 	Weapon->SetRenderCustomDepth(false);
 }
 
+int32 AGassieEnemy::GetPlayerLevel()
+{
+	return Level;
+}
+
 	

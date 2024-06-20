@@ -34,6 +34,7 @@ private:
 	void Move(const FInputActionValue& InputActionValue);
 
 	void CursorTrace();
+	//Jeśli wyjebie błąd, trzeba zmienić na zwykły wskaźnik
 	TScriptInterface<IEnemyInterface> LastActor;
 	TScriptInterface<IEnemyInterface> ThisActor;
 };

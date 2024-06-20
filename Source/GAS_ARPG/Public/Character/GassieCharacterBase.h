@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
 #include "GameFramework/Character.h"
+#include "Interaction/CombatInterface.h"
 #include "GassieCharacterBase.generated.h"
 
 class UGameplayEffect;
@@ -13,7 +14,7 @@ class UAbilitySystemComponent;
 
 // Preventing to being dragged out to the level
 UCLASS(Abstract)
-class GAS_ARPG_API AGassieCharacterBase : public ACharacter, public IAbilitySystemInterface
+class GAS_ARPG_API AGassieCharacterBase : public ACharacter, public IAbilitySystemInterface, public ICombatInterface
 {
 	GENERATED_BODY()
 

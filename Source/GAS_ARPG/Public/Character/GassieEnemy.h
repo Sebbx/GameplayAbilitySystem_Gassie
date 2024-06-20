@@ -12,16 +12,23 @@ UCLASS()
 class GAS_ARPG_API AGassieEnemy : public AGassieCharacterBase, public IEnemyInterface
 {
 	GENERATED_BODY()
+public:
 	AGassieEnemy();
 
+	/** Enemy Interface */
 	virtual void HighlightActor() override;
 	virtual void UnHighlightActor() override;
+	/** end Enemy Interface */
+
+	/** Combat Interface */
+	virtual int32 GetPlayerLevel() override;
+	/** end Combat Interface */
 
 protected:
 	virtual void BeginPlay() override;
 	virtual void InitAbilityActorInfo() override;
 	
-public:
-	UPROPERTY(BlueprintReadOnly)
-	bool bHighLighted = false;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character Class Defaults")
+	int32 Level = 1;
+
 };

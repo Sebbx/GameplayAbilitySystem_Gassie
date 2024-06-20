@@ -5,6 +5,7 @@
 
 #include "AbilitySystem/GassieAbilitySystemComponent.h"
 #include "AbilitySystem/GassieAttributeSet.h"
+#include "Net/UnrealNetwork.h"
 
 AGassiePlayerState::AGassiePlayerState()
 {
@@ -18,6 +19,13 @@ AGassiePlayerState::AGassiePlayerState()
 	NetUpdateFrequency = 100.f;
 }
 
+void AGassiePlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AGassiePlayerState, Level);
+}
+
 UAbilitySystemComponent* AGassiePlayerState::GetAbilitySystemComponent() const
 {
 	return AbilitySystemComponent;
@@ -26,4 +34,9 @@ UAbilitySystemComponent* AGassiePlayerState::GetAbilitySystemComponent() const
 UAttributeSet* AGassiePlayerState::GetAttributeSet() const
 {
 	return AttributeSet;
+}
+
+void AGassiePlayerState::OnRep_Level(int32 OldLevel)
+{
+	
 }

@@ -38,6 +38,13 @@ void AGassieCharacter::OnRep_PlayerState()
 	InitAbilityActorInfo();
 }
 
+int32 AGassieCharacter::GetPlayerLevel()
+{
+	AGassiePlayerState* GassiePlayerState = GetPlayerState<AGassiePlayerState>();
+	check(GassiePlayerState);
+	return GassiePlayerState->GetPlayerLevel();
+}
+
 void AGassieCharacter::InitAbilityActorInfo()
 {
 	AGassiePlayerState* GassiePlayerState = GetPlayerState<AGassiePlayerState>();
