@@ -62,4 +62,5 @@ void AGassieCharacter::InitAbilityActorInfo()
 		}
 	}
 	InitializeDefaultAttributes();
+	
 }
