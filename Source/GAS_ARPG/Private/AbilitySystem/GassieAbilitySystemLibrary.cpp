@@ -23,3 +23,19 @@ UOverlayWidgetController* UGassieAbilitySystemLibrary::GetOverlayWidgetControlle
 	}
 	return nullptr;
 }
+
+UAttributeMenuWidgetController* UGassieAbilitySystemLibrary::GetAttributeMenuWidgetController(const UObject* WorldContextObject)
+{
+	APlayerController* PC =  UGameplayStatics::GetPlayerController(WorldContextObject, 0);
+	{
+		if (AGassieHUD* GassieHUD = Cast<AGassieHUD>(PC->GetHUD()))
+		{
+			AGassiePlayerState* PS = PC->GetPlayerState<AGassiePlayerState>();
+			UAbilitySystemComponent* ASC =  PS->GetAbilitySystemComponent();
+			UAttributeSet* AS = PS->GetAttributeSet();
+			const FWidgetControllerParams WidgetControllerParams (PC, PS, ASC, AS);
+			return GassieHUD->GetAttributeMenuWidgetController(WidgetControllerParams);
+		}
+	}
+	return nullptr;
+}

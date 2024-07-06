@@ -2,14 +2,22 @@
 
 
 #include "UI/WidgetController/AttributeMenuWidgetController.h"
-
-
-void UAttributeMenuWidgetController::BroadcastInitialValues()
-{
-	Super::BroadcastInitialValues();
-}
+#include "AbilitySystem/GassieAttributeSet.h"
+#include "AbilitySystem/Data/AttributeInfo.h"
+#include "GassieGameplayTags.h"
 
 void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 {
-	Super::BindCallbacksToDependencies();
+	
+}
+
+void UAttributeMenuWidgetController::BroadcastInitialValues()
+{// 92. Attribute Info Delegate
+	UGassieAttributeSet* AS = CastChecked<UGassieAttributeSet>(AttributeSet);
+
+	check(AttributeInfo);
+	
+	FGassieAttributeInfo Info = AttributeInfo->FindAttributeInfoOrTag(FGassieGameplayTags::Get().Attributes_Primary_Strength);
+	Info.AttributeValue = AS->GetStrength();
+	AttributeInfoDelegate.Broadcast(Info);
 }

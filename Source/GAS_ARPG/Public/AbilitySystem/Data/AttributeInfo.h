@@ -34,7 +34,8 @@ class GAS_ARPG_API UAttributeInfo : public UDataAsset
 	GENERATED_BODY()
 public:
 	FGassieAttributeInfo FindAttributeInfoOrTag(const FGameplayTag& AttributeTag, bool bLogNotFound = false) const;
-
+	
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TArray<FGassieAttributeInfo> AttributeInformation;
 	
