@@ -48,6 +48,14 @@ struct FEffectProperties
 	
 };
 
+// 94.
+//'Podmiana' paskudnej definicji na coś ładniejszego
+//typedef TBaseStaticDelegateInstance<FGameplayAttribute(), FDefaultDelegateUserPolicy>::FFuncPtr FAttributeFuncPtr;
+
+//Template aby to było troszkę bardziej uniwersalne
+template<class T>
+using TStaticFuncPtr = typename TBaseStaticDelegateInstance<T, FDefaultDelegateUserPolicy>::FFuncPtr;
+
 /**
  * 
  */
@@ -64,6 +72,18 @@ public:
 	
 	//46. PostGameplayEffectExecute - Wywoływanie po wykonaniu GameplayEffectu
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
+
+	// 94. Mapping Tags to Attributes
+	//Wskaźnik do zmiennej zapisany na dwa sposoby:
+	//TBaseStaticDelegateInstance<FGameplayAttribute(), FDefaultDelegateUserPolicy>::FFuncPtr
+	//FGameplayAttribute(*)()
+	//
+	//Użycie w mapie:
+	//TMap<FGameplayTag, TBaseStaticDelegateInstance<FGameplayAttribute(), FDefaultDelegateUserPolicy>::FFuncPtr > TagsToAttributes;
+	//TMap<FGameplayTag, FGameplayAttribute(*)()> TagsToAttributes;
+	//
+	//Użycie w mapie za pomocą typedefa zadeklarowanego nad klasą:
+	TMap<FGameplayTag, TStaticFuncPtr<FGameplayAttribute()>> TagsToAttributes;
 	
 	/* 64. Initialize Attributes from a Data Table
 	 * Primary Attributes

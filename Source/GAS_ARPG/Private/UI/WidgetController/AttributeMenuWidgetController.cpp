@@ -4,20 +4,34 @@
 #include "UI/WidgetController/AttributeMenuWidgetController.h"
 #include "AbilitySystem/GassieAttributeSet.h"
 #include "AbilitySystem/Data/AttributeInfo.h"
-#include "GassieGameplayTags.h"
 
 void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 {
+	//95. Responding to Attribute Changes
+	UGassieAttributeSet* AS = CastChecked<UGassieAttributeSet>(AttributeSet);
+	check(AttributeInfo);
+	for(auto& Pair : AS->TagsToAttributes)
 	
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Pair.Value()).AddLambda(
+		[this, Pair](const FOnAttributeChangeData& Data)
+		{
+			BroadcastAttributeInfo(Pair.Key, Pair.Value());
+		});
 }
 
 void UAttributeMenuWidgetController::BroadcastInitialValues()
-{// 92. Attribute Info Delegate
+{// 92. Attribute Info Delegate, 94. Mapping Tags to Attributes
 	UGassieAttributeSet* AS = CastChecked<UGassieAttributeSet>(AttributeSet);
-
 	check(AttributeInfo);
-	
-	FGassieAttributeInfo Info = AttributeInfo->FindAttributeInfoOrTag(FGassieGameplayTags::Get().Attributes_Primary_Strength);
-	Info.AttributeValue = AS->GetStrength();
+	for (auto& Pair : AS->TagsToAttributes)
+	{
+		BroadcastAttributeInfo(Pair.Key, Pair.Value());
+	}
+}
+
+void UAttributeMenuWidgetController::BroadcastAttributeInfo(const FGameplayTag& AttributeTag,const FGameplayAttribute& Attribute) const
+{
+	FGassieAttributeInfo Info =  AttributeInfo->FindAttributeInfoOrTag(AttributeTag);
+	Info.AttributeValue = Attribute.GetNumericValue(AttributeSet);
 	AttributeInfoDelegate.Broadcast(Info);
 }
