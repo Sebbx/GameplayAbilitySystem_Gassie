@@ -6,8 +6,7 @@
 #include "AbilitySystemComponent.h"
 #include "GassieAbilitySystemComponent.generated.h"
 
-//55.Broadcasting Effect Asset Tags
-DECLARE_MULTICAST_DELEGATE_OneParam(FEffectAssetTags, const FGameplayTagContainer&);
+DECLARE_MULTICAST_DELEGATE_OneParam(FEffectAssetTags, const FGameplayTagContainer&); //55.Broadcasting Effect Asset Tags
 
 /**
  * 
@@ -19,11 +18,11 @@ class GAS_ARPG_API UGassieAbilitySystemComponent : public UAbilitySystemComponen
 
 public:
 	void AbilityActorInfoSet(); //53.
-	FEffectAssetTags EffectAssetTagsDelegate; //55
-	
+	FEffectAssetTags EffectAssetTagsDelegate; //55. 
+
+	void AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupAbilities); //97. Granting Abilities
 	
 protected:
-	//53. GameplayEffect Delegates
-	void EffectApplied(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle ActiveEffectHandle);
+	void EffectApplied(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle ActiveEffectHandle); //53. GameplayEffect Delegates
 	
 };

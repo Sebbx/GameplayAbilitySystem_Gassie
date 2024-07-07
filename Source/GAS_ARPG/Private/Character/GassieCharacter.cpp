@@ -25,17 +25,14 @@ AGassieCharacter::AGassieCharacter()
 void AGassieCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
-
-	// Init ability Actor info for the Server
-	InitAbilityActorInfo();
+	InitAbilityActorInfo(); // Init ability Actor info for the Server
+	AddCharacterAbilities();
 }
 
 void AGassieCharacter::OnRep_PlayerState()
 {
 	Super::OnRep_PlayerState();
-
-	// Init ability Actor info for the Client
-	InitAbilityActorInfo();
+	InitAbilityActorInfo(); // Init ability Actor info for the Client
 }
 
 int32 AGassieCharacter::GetPlayerLevel()
@@ -61,6 +58,6 @@ void AGassieCharacter::InitAbilityActorInfo()
 			GassieHUD->InitOverlay(GassiePlayerController, GassiePlayerState, AbilitySystemComponent, AttributeSet);
 		}
 	}
-	InitializeDefaultAttributes();
 	
+	InitializeDefaultAttributes();
 }

@@ -1,6 +1,7 @@
 #include "Character/GassieCharacterBase.h"
 
 #include "AbilitySystemComponent.h"
+#include "AbilitySystem/GassieAbilitySystemComponent.h"
 
 AGassieCharacterBase::AGassieCharacterBase()
 {
@@ -47,6 +48,14 @@ void AGassieCharacterBase::ApplyEffectToSelf(const TSubclassOf<UGameplayEffect> 
 	ContextHandle.AddSourceObject(this);
 	const FGameplayEffectSpecHandle SpecHandle = GetAbilitySystemComponent()->MakeOutgoingSpec(GameplayEffectClass, Level, ContextHandle);
 	GetAbilitySystemComponent()->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data.Get(), GetAbilitySystemComponent());
+}
+
+void AGassieCharacterBase::AddCharacterAbilities()
+{// Only on server
+	UGassieAbilitySystemComponent* GassieASC = CastChecked<UGassieAbilitySystemComponent>(AbilitySystemComponent);
+	if (!HasAuthority()) return;
+
+	GassieASC->AddCharacterAbilities(StartupAbilities);
 }
 
 

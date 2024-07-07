@@ -1,13 +1,12 @@
 // Copyright Sebastian Rubacha
-
 #pragma once
-
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
 #include "GameFramework/Character.h"
 #include "Interaction/CombatInterface.h"
 #include "GassieCharacterBase.generated.h"
 
+class UGameplayAbility;
 class UGameplayEffect;
 class UAttributeSet;
 class UAbilitySystemComponent;
@@ -45,12 +44,13 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Attributes")
 	TSubclassOf<UGameplayEffect> DefaultVitalAttributes;
-
-	//65. Initialize Attributes with Gameplay Effects
-	//void InitializePrimaryAttributes() const;
-
-	//70. Derived Attributes
-	void InitializeDefaultAttributes() const;
+	
+	void InitializeDefaultAttributes() const; //70. Derived Attributes
 	void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClass, float Level) const;
+	
+	void AddCharacterAbilities(); //97. Granting Abilities
 
+private:
+	UPROPERTY(EditAnywhere, Category = "Abilities")
+	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
 };
