@@ -1,10 +1,9 @@
 // Copyright Sebastian Rubacha
 
-
 #include "Player/GassiePlayerController.h"
-
-#include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "GameplayTagContainer.h"
+#include "Input/GassieInputComponent.h"
 #include "Interaction/EnemyInterface.h"
 
 AGassiePlayerController::AGassiePlayerController()
@@ -89,11 +88,26 @@ void AGassiePlayerController::Move(const FInputActionValue& InputActionValue)
 	}
 }
 
+void AGassiePlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
+{
+	GEngine->AddOnScreenDebugMessage(1, 2.f, FColor::Orange, *InputTag.ToString());
+}
+
+void AGassiePlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
+{
+	GEngine->AddOnScreenDebugMessage(2, 2.f, FColor::Blue, *InputTag.ToString());
+}
+
+void AGassiePlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
+{
+	GEngine->AddOnScreenDebugMessage(3, 2.f, FColor::Green, *InputTag.ToString());
+}
+
 void AGassiePlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
-	UEnhancedInputComponent* EnhancedInputComponent =  CastChecked<UEnhancedInputComponent>(InputComponent);
-
-	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AGassiePlayerController::Move);
+	UGassieInputComponent* GassieInputComponent =  CastChecked<UGassieInputComponent>(InputComponent);
+	GassieInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AGassiePlayerController::Move);
+	GassieInputComponent->BindAbilityActions(InputConfig, this, &ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagReleased, &ThisClass::AbilityInputTagHeld);
 }

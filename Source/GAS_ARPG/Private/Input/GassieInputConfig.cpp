@@ -7,7 +7,7 @@ const UInputAction* UGassieInputConfig::FindAbilityInputActionForTag(const FGame
 {
 	for (const FGassieInputAction& AbilityInputAction : AbilityInputActions)
 	{
-		if (AbilityInputAction.InputAction && AbilityInputAction.GameplayTag == InputTag) return AbilityInputAction.InputAction;
+		if (AbilityInputAction.InputAction && AbilityInputAction.InputTag == InputTag) return AbilityInputAction.InputAction;
 	}
 
 	if (bLogNotFound)

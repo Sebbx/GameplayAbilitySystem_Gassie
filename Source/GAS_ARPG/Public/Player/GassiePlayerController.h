@@ -7,6 +7,8 @@
 #include "GassiePlayerController.generated.h"
 
 
+struct FGameplayTag;
+class UGassieInputConfig;
 class IEnemyInterface;
 struct FInputActionValue;
 class UInputAction;
@@ -37,4 +39,11 @@ private:
 	//Jeśli wyjebie błąd, trzeba zmienić na zwykły wskaźnik
 	TScriptInterface<IEnemyInterface> LastActor;
 	TScriptInterface<IEnemyInterface> ThisActor;
+
+	void AbilityInputTagPressed(FGameplayTag InputTag); //101. Callbacks for Ability Input
+	void AbilityInputTagReleased(FGameplayTag InputTag);
+	void AbilityInputTagHeld(FGameplayTag InputTag);
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	TObjectPtr<UGassieInputConfig> InputConfig;
 };

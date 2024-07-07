@@ -16,7 +16,7 @@ struct FGassieInputAction
 	const class UInputAction* InputAction = nullptr;
 
 	UPROPERTY(EditDefaultsOnly)
-	FGameplayTag GameplayTag = FGameplayTag();
+	FGameplayTag InputTag = FGameplayTag();
 	
 };
 /**
