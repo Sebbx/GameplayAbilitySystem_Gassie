@@ -7,6 +7,7 @@
 #include "GassiePlayerController.generated.h"
 
 
+class UGassieAbilitySystemComponent;
 struct FGameplayTag;
 class UGassieInputConfig;
 class IEnemyInterface;
@@ -46,4 +47,9 @@ private:
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TObjectPtr<UGassieInputConfig> InputConfig;
+
+	TObjectPtr<UGassieAbilitySystemComponent> GassieAbilitySystemComponent;
+
+	UGassieAbilitySystemComponent* GetASC();
+	
 };

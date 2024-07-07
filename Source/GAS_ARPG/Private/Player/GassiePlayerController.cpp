@@ -1,8 +1,11 @@
 // Copyright Sebastian Rubacha
 
 #include "Player/GassiePlayerController.h"
+
+#include "AbilitySystemBlueprintLibrary.h"
 #include "EnhancedInputSubsystems.h"
 #include "GameplayTagContainer.h"
+#include "AbilitySystem/GassieAbilitySystemComponent.h"
 #include "Input/GassieInputComponent.h"
 #include "Interaction/EnemyInterface.h"
 
@@ -90,17 +93,28 @@ void AGassiePlayerController::Move(const FInputActionValue& InputActionValue)
 
 void AGassiePlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 {
-	GEngine->AddOnScreenDebugMessage(1, 2.f, FColor::Orange, *InputTag.ToString());
+	//GEngine->AddOnScreenDebugMessage(1, 2.f, FColor::Orange, *InputTag.ToString());
 }
 
 void AGassiePlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 {
+	if(GetASC() == nullptr) return;
 	GEngine->AddOnScreenDebugMessage(2, 2.f, FColor::Blue, *InputTag.ToString());
 }
 
 void AGassiePlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 {
-	GEngine->AddOnScreenDebugMessage(3, 2.f, FColor::Green, *InputTag.ToString());
+	if(GetASC() == nullptr) return;
+	GetASC()->AbilityInputTagHeld(InputTag);
+}
+
+UGassieAbilitySystemComponent* AGassiePlayerController::GetASC()
+{
+	if (GassieAbilitySystemComponent == nullptr)
+	{
+		GassieAbilitySystemComponent = Cast<UGassieAbilitySystemComponent>(UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn<APawn>()));
+	}
+	return GassieAbilitySystemComponent;
 }
 
 void AGassiePlayerController::SetupInputComponent()
