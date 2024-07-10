@@ -5,13 +5,17 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "EnhancedInputSubsystems.h"
 #include "GameplayTagContainer.h"
+#include "GassieGameplayTags.h"
 #include "AbilitySystem/GassieAbilitySystemComponent.h"
+#include "Components/SplineComponent.h"
 #include "Input/GassieInputComponent.h"
 #include "Interaction/EnemyInterface.h"
 
 AGassiePlayerController::AGassiePlayerController()
 {
 	bReplicates = true;
+
+	Spline = CreateDefaultSubobject<USplineComponent>("Spline");
 }
 
 void AGassiePlayerController::BeginPlay()
@@ -40,7 +44,6 @@ void AGassiePlayerController::PlayerTick(float DeltaTime)
 
 	CursorTrace();
 }
-
 
 void AGassiePlayerController::CursorTrace()
 {
@@ -91,9 +94,13 @@ void AGassiePlayerController::Move(const FInputActionValue& InputActionValue)
 	}
 }
 
-void AGassiePlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
+void AGassiePlayerController::AbilityInputTagPressed(FGameplayTag InputTag) //104.
 {
-	//GEngine->AddOnScreenDebugMessage(1, 2.f, FColor::Orange, *InputTag.ToString());
+	if (InputTag.MatchesTagExact(FGassieGameplayTags::Get().InputTag_LMB))
+	{
+		bTargeting = ThisActor ? true : false;
+		bAutoRunning = false;
+	}
 }
 
 void AGassiePlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
@@ -102,10 +109,38 @@ void AGassiePlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 	GEngine->AddOnScreenDebugMessage(2, 2.f, FColor::Blue, *InputTag.ToString());
 }
 
-void AGassiePlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
+void AGassiePlayerController::AbilityInputTagHeld(FGameplayTag InputTag) //104.
 {
-	if(GetASC() == nullptr) return;
-	GetASC()->AbilityInputTagHeld(InputTag);
+	if (!InputTag.MatchesTagExact(FGassieGameplayTags::Get().InputTag_LMB))
+	{
+		GetASC()->AbilityInputTagHeld(InputTag);
+		return;
+	}
+	
+	if (bTargeting)
+	{
+		if (InputTag.MatchesTagExact(FGassieGameplayTags::Get().InputTag_LMB))
+		{
+			GetASC()->AbilityInputTagHeld(InputTag);
+		}
+	}
+
+	else
+	{
+		FollowTime += GetWorld()->GetDeltaSeconds();
+
+		FHitResult Hit;
+		if (GetHitResultUnderCursor(ECC_Visibility, false, Hit))
+		{
+			CachedDestination = Hit.ImpactPoint;
+		}
+
+		if (APawn* ControlledPawn = GetPawn())
+		{
+			const FVector WorldDirection = (CachedDestination - ControlledPawn->GetActorLocation()).GetSafeNormal();
+			ControlledPawn->AddMovementInput(WorldDirection);
+		}
+	}
 }
 
 UGassieAbilitySystemComponent* AGassiePlayerController::GetASC()

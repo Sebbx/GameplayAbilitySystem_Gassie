@@ -7,6 +7,7 @@
 #include "GassiePlayerController.generated.h"
 
 
+class USplineComponent;
 class UGassieAbilitySystemComponent;
 struct FGameplayTag;
 class UGassieInputConfig;
@@ -51,5 +52,16 @@ private:
 	TObjectPtr<UGassieAbilitySystemComponent> GassieAbilitySystemComponent;
 
 	UGassieAbilitySystemComponent* GetASC();
+
+	FVector CachedDestination = FVector::ZeroVector; //104. Setting Up Click to Move
+	float FollowTime = 0.f;
+	float ShortPressThreshold = 0.5f;
+	bool bAutoRunning= false;
+	bool bTargeting = false;
+
+	UPROPERTY(EditDefaultsOnly)
+	float AutoRunAcceptanceRadius = 50.f;
+
+	TObjectPtr<USplineComponent> Spline;
 	
 };
