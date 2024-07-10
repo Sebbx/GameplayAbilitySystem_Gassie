@@ -6,6 +6,8 @@
 #include "EnhancedInputSubsystems.h"
 #include "GameplayTagContainer.h"
 #include "GassieGameplayTags.h"
+#include "NavigationPath.h"
+#include "NavigationSystem.h"
 #include "AbilitySystem/GassieAbilitySystemComponent.h"
 #include "Components/SplineComponent.h"
 #include "Input/GassieInputComponent.h"
@@ -103,10 +105,41 @@ void AGassiePlayerController::AbilityInputTagPressed(FGameplayTag InputTag) //10
 	}
 }
 
-void AGassiePlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
+void AGassiePlayerController::AbilityInputTagReleased(FGameplayTag InputTag) //105.
 {
-	if(GetASC() == nullptr) return;
-	GEngine->AddOnScreenDebugMessage(2, 2.f, FColor::Blue, *InputTag.ToString());
+	if (!InputTag.MatchesTagExact(FGassieGameplayTags::Get().InputTag_LMB))
+	{
+		GetASC()->AbilityInputTagReleased(InputTag);
+		return;
+	}
+
+	if (bTargeting)
+	{
+		if (InputTag.MatchesTagExact(FGassieGameplayTags::Get().InputTag_LMB))
+		{
+			GetASC()->AbilityInputTagReleased(InputTag);
+		}
+	}
+
+	else
+	{
+		APawn* ControlledPawn = GetPawn();
+		if (FollowTime <= ShortPressThreshold && ControlledPawn)
+		{
+			if (UNavigationPath* NavPath = UNavigationSystemV1::FindPathToLocationSynchronously(this, ControlledPawn->GetActorLocation(), CachedDestination))
+			{
+				Spline->ClearSplinePoints();
+				for(const FVector& PointLoc : NavPath->PathPoints)
+				{
+					Spline->AddSplinePoint(PointLoc, ESplineCoordinateSpace::World);
+					DrawDebugSphere(GetWorld(), PointLoc, 8.f, 8, FColor::Green, false, 5.f);
+				}
+				bAutoRunning = true;
+			}
+		}
+		FollowTime = 0.f;
+		bTargeting = false;
+	}
 }
 
 void AGassiePlayerController::AbilityInputTagHeld(FGameplayTag InputTag) //104.
