@@ -7,7 +7,7 @@
 
 void UGassieAbilitySystemComponent::AbilityActorInfoSet()
 {
-	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &UGassieAbilitySystemComponent::EffectApplied);
+	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &UGassieAbilitySystemComponent::ClientEffectApplied);
 }
 
 void UGassieAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupAbilities) //97, 102
@@ -30,7 +30,7 @@ void UGassieAbilitySystemComponent::AbilityInputTagHeld(const FGameplayTag& Inpu
 	for(FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities()) 	// GetActivatableAbilities() - Get abilities that can be activated
 	{
 		if (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
-		{
+		{   
 			AbilitySpecInputPressed(AbilitySpec); //This only tells ability that input was pressed, you can override virtual function onpressed to implement some functionality
 			if (!AbilitySpec.IsActive())
 			{
@@ -53,7 +53,7 @@ void UGassieAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& 
 	}
 }
 
-void UGassieAbilitySystemComponent::EffectApplied(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle ActiveEffectHandle)
+void UGassieAbilitySystemComponent::ClientEffectApplied_Implementation(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle ActiveEffectHandle)
 {
 	FGameplayTagContainer TagContainer;	//54.
 	EffectSpec.GetAllAssetTags(TagContainer);

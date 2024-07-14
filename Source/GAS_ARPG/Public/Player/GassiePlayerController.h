@@ -41,6 +41,7 @@ private:
 	//Jeśli wyjebie błąd, trzeba zmienić na zwykły wskaźnik
 	TScriptInterface<IEnemyInterface> LastActor;
 	TScriptInterface<IEnemyInterface> ThisActor;
+	FHitResult CursorHit;
 
 	void AbilityInputTagPressed(FGameplayTag InputTag); //101. Callbacks for Ability Input
 	void AbilityInputTagReleased(FGameplayTag InputTag);
@@ -62,6 +63,9 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	float AutoRunAcceptanceRadius = 50.f;
 
+	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USplineComponent> Spline;
+
+	void AutoRun();
 	
 };
