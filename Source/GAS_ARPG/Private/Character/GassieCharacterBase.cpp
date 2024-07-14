@@ -28,6 +28,11 @@ void AGassieCharacterBase::BeginPlay()
 	
 }
 
+FVector AGassieCharacterBase::GetCombatSocketLocation()
+{
+	return Weapon->GetSocketLocation(WeaponTipSocketName);
+}
+
 void AGassieCharacterBase::InitAbilityActorInfo()
 {
 	
